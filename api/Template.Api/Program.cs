@@ -1,3 +1,4 @@
+using Serilog;
 using Template.Persistance;
 
 namespace Template.Api
@@ -9,6 +10,8 @@ namespace Template.Api
             var builder = WebApplication.CreateBuilder(args);
 
             builder.Services.AddControllers();
+            builder.Host.UseSerilog((context, configuration) => configuration.ReadFrom.Configuration(context.Configuration));
+
             builder.Services
                 .AddEndpointsApiExplorer()
                 .AddSwaggerGen()
@@ -20,6 +23,8 @@ namespace Template.Api
             {
                 app.UseSwagger().UseSwaggerUI();
             }
+
+            app.UseSerilogRequestLogging();
 
             app.UseHttpsRedirection();
             app.UseAuthorization();
