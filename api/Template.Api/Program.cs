@@ -21,6 +21,7 @@ namespace Template.Api
 
             if (app.Environment.IsDevelopment())
             {
+                app.UseDeveloperExceptionPage();
                 app.UseSwagger().UseSwaggerUI();
             }
 
