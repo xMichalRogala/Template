@@ -14,6 +14,7 @@ COPY ["Template.Infrastructure/Template.Infrastructure.csproj", "Template.Infras
 COPY ["Template.Application/Template.Application.csproj", "Template.Application/"]
 COPY ["Template.Domain/Template.Domain.csproj", "Template.Domain/"]
 COPY ["Template.Persistance/Template.Persistance.csproj", "Template.Persistance/"]
+COPY ["Template.Contracts/Template.Contracts.csproj", "Template.Contracts/"]
 RUN dotnet restore "./Template.Api/Template.Api.csproj"
 COPY . .
 WORKDIR "/src/Template.Api"
