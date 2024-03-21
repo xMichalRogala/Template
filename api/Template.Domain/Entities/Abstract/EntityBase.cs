@@ -59,7 +59,7 @@ namespace Template.Domain.Entities.Abstract
                 return false;
             }
 
-            if (!(obj is EntityBase other))
+            if (obj is not EntityBase other)
             {
                 return false;
             }

@@ -2,12 +2,8 @@
 
 namespace Template.Domain.Exceptions
 {
-    public class DomainException : Exception
+    public class DomainException(Error error) : Exception(error.Message)
     {
-        public DomainException(Error error)
-            : base(error.Message)
-            => Error = error;
-
-        public Error Error { get; }
+        public Error Error { get; } = error;
     }
 }

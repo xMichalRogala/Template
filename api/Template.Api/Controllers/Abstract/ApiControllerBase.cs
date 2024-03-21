@@ -3,10 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Template.Api.Controllers.Abstract
 {
-    public abstract class ApiControllerBase : ControllerBase
+    public abstract class ApiControllerBase(IMediator mediator) : ControllerBase
     {
-        protected ApiControllerBase(IMediator mediator) => Mediator = mediator;
-
-        protected IMediator Mediator { get; }
+        protected IMediator Mediator { get; } = mediator;
     }
 }

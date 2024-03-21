@@ -9,13 +9,8 @@ using Template.Contracts.Auth;
 namespace Template.Api.Controllers
 {
     [AllowAnonymous]
-    public sealed class AuthController : ApiControllerBase
+    public sealed class AuthController(IMediator mediator) : ApiControllerBase(mediator)
     {
-        public AuthController(IMediator mediator)
-            : base(mediator)
-        {
-        }
-
         [HttpPost(ApiRoutes.Authentication.Register)]
         public async Task<IActionResult> Create(RegisterRequest registerRequest)
         {

@@ -19,7 +19,7 @@
 
         public static bool operator !=(ValueObject a, ValueObject b) => !(a == b);
 
-        public bool Equals(ValueObject? other) => !(other is null) && GetAtomicValues().SequenceEqual(other.GetAtomicValues());
+        public bool Equals(ValueObject? other) => other is not null && GetAtomicValues().SequenceEqual(other.GetAtomicValues());
 
         public override bool Equals(object? obj)
         {
@@ -33,7 +33,7 @@
                 return false;
             }
 
-            if (!(obj is ValueObject valueObject))
+            if (obj is not ValueObject valueObject)
             {
                 return false;
             }

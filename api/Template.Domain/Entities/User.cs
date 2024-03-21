@@ -1,4 +1,5 @@
 ﻿using Template.Domain.Entities.Abstract;
+using Template.Domain.Services;
 using Template.Domain.Utilities;
 using Template.Domain.ValueObjects;
 
@@ -6,7 +7,7 @@ namespace Template.Domain.Entities
 {
     public sealed class User : EntityBase, IAuditableEntity, ISoftDeletableEntity
     {
-        private string _passwordHash;
+        private readonly string _passwordHash;
 
         private User(FirstName firstName, LastName lastName, Email email, string passwordHash)
             : base(Guid.NewGuid())
@@ -38,6 +39,9 @@ namespace Template.Domain.Entities
 
         public bool Deleted { get; }
 
-        public static User Create(FirstName firstName, LastName lastName, Email email, string passwordHash) => new User(firstName, lastName, email, passwordHash);
+        public static User Create(FirstName firstName, LastName lastName, Email email, string passwordHash) => new(firstName, lastName, email, passwordHash);
+
+        public bool VerifyPasswordHash(string password, IPasswordHashChecker passwordHashChecker)
+            => !string.IsNullOrWhiteSpace(password) && passwordHashChecker.HashesMatch(_passwordHash, password);
     }
 }

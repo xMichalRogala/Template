@@ -5,17 +5,11 @@ using Template.Application.Core.Abstractions.Messages;
 
 namespace Template.Application.Core.Behaviours
 {
-    internal sealed class TransactionBehaviour<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
+    internal sealed class TransactionBehaviour<TRequest, TResponse>(IUnitOfWork unitOfWork) : IPipelineBehavior<TRequest, TResponse>
         where TRequest : class, IRequest<TResponse>
         where TResponse : class
     {
-        private readonly IUnitOfWork _unitOfWork;
-
-        /// <summary>
-        /// Initializes a new instance of the <see cref="TransactionBehaviour{TRequest,TResponse}"/> class.
-        /// </summary>
-        /// <param name="unitOfWork">The unit of work.</param>
-        public TransactionBehaviour(IUnitOfWork unitOfWork) => _unitOfWork = unitOfWork;
+        private readonly IUnitOfWork _unitOfWork = unitOfWork;
 
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {

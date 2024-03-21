@@ -9,18 +9,12 @@ using Template.Domain.Entities;
 
 namespace Template.Infrastructure.Core.Auth
 {
-    internal sealed class JwtProvider : IJwtProvider
+    internal sealed class JwtProvider(
+        IOptions<JwtSettings> jwtOptions,
+        IDateTime dateTime) : IJwtProvider
     {
-        private readonly JwtSettings _jwtSettings;
-        private readonly IDateTime _dateTime;
-
-        public JwtProvider(
-            IOptions<JwtSettings> jwtOptions,
-            IDateTime dateTime)
-        {
-            _jwtSettings = jwtOptions.Value;
-            _dateTime = dateTime;
-        }
+        private readonly JwtSettings _jwtSettings = jwtOptions.Value;
+        private readonly IDateTime _dateTime = dateTime;
 
         public string Create(User user)
         {
@@ -29,11 +23,11 @@ namespace Template.Infrastructure.Core.Auth
             var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
             Claim[] claims =
-            {
+            [
                 new Claim("userId", user.Id.ToString()),
                 new Claim("email", user.Email),
                 new Claim("name", user.FullName)
-            };
+            ];
 
             DateTime tokenExpirationTime = _dateTime.UtcNow.AddMinutes(_jwtSettings.TokenExpirationInMinutes);
 

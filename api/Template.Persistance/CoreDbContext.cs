@@ -10,15 +10,9 @@ using Template.Persistance.Extensions;
 
 namespace Template.Persistance
 {
-    public class CoreDbContext : DbContext, IUnitOfWork
+    public class CoreDbContext(DbContextOptions options, IDateTime dateTime) : DbContext(options), IUnitOfWork
     {
-        private readonly IDateTime _dateTime;
-
-        public CoreDbContext(DbContextOptions options, IDateTime dateTime)
-            : base(options)
-        {
-            _dateTime = dateTime;
-        }
+        private readonly IDateTime _dateTime = dateTime;
 
         public DbSet<User> Users { get; set; }
 

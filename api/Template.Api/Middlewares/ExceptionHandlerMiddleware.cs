@@ -8,16 +8,10 @@ using Template.Domain.Utilities;
 
 namespace Template.Api.Middlewares
 {
-    internal class ExceptionHandlerMiddleware
+    internal class ExceptionHandlerMiddleware(RequestDelegate next, ILogger<ExceptionHandlerMiddleware> logger)
     {
-        private readonly RequestDelegate _next;
-        private readonly ILogger<ExceptionHandlerMiddleware> _logger;
-
-        public ExceptionHandlerMiddleware(RequestDelegate next, ILogger<ExceptionHandlerMiddleware> logger)
-        {
-            _next = next;
-            _logger = logger;
-        }
+        private readonly RequestDelegate _next = next;
+        private readonly ILogger<ExceptionHandlerMiddleware> _logger = logger;
 
         public async Task Invoke(HttpContext httpContext)
         {
@@ -41,7 +35,7 @@ namespace Template.Api.Middlewares
 
             httpContext.Response.StatusCode = (int)httpStatusCode;
 
-            var serializerOptions = new JsonSerializerOptions
+            JsonSerializerOptions serializerOptions = new()
             {
                 PropertyNamingPolicy = JsonNamingPolicy.CamelCase
             };

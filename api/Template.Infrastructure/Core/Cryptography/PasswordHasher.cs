@@ -18,10 +18,7 @@ namespace Template.Infrastructure.Core.Cryptography
 
         public string HashPassword(Password password)
         {
-            if (password is null)
-            {
-                throw new ArgumentNullException(nameof(password));
-            }
+            ArgumentNullException.ThrowIfNull(password);
 
             string hashedPassword = Convert.ToBase64String(HashPasswordInternal(password));
 
@@ -30,15 +27,9 @@ namespace Template.Infrastructure.Core.Cryptography
 
         public bool HashesMatch(string passwordHash, string providedPassword)
         {
-            if (passwordHash is null)
-            {
-                throw new ArgumentNullException(nameof(passwordHash));
-            }
+            ArgumentNullException.ThrowIfNull(passwordHash);
 
-            if (providedPassword is null)
-            {
-                throw new ArgumentNullException(nameof(providedPassword));
-            }
+            ArgumentNullException.ThrowIfNull(providedPassword);
 
             byte[] decodedHashedPassword = Convert.FromBase64String(passwordHash);
 

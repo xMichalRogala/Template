@@ -11,7 +11,8 @@ namespace Template.Persistance
     {
         public static IServiceCollection AddPersistence(this IServiceCollection services, IConfiguration configuration, bool isDevelopmentEnvironment)
         {
-            string connectionString = configuration.GetConnectionString(ConnectionString.SettingsKey) ?? throw new ArgumentNullException($"There is no connection string with key: {ConnectionString.SettingsKey}");
+            string connectionString = configuration.GetConnectionString(ConnectionString.SettingsKey)
+                ?? throw new ArgumentNullException($"There is no connection string with key: {ConnectionString.SettingsKey}");
 
             var connectionStringObj = new ConnectionString(connectionString);
 
