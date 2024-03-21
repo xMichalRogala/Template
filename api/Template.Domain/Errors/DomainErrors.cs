@@ -31,5 +31,28 @@ namespace Template.Domain.Errors
 
             public static Error InvalidFormat => new Error("Email.InvalidFormat", "The email format is invalid.");
         }
+
+        public static class Password
+        {
+            public static Error NullOrEmpty => new Error("Password.NullOrEmpty", "The password is required.");
+
+            public static Error TooShort => new Error("Password.TooShort", "The password is too short.");
+
+            public static Error MissingUppercaseLetter => new Error(
+                "Password.MissingUppercaseLetter",
+                "The password requires at least one uppercase letter.");
+
+            public static Error MissingLowercaseLetter => new Error(
+                "Password.MissingLowercaseLetter",
+                "The password requires at least one lowercase letter.");
+
+            public static Error MissingDigit => new Error(
+                "Password.MissingDigit",
+                "The password requires at least one digit.");
+
+            public static Error MissingNonAlphaNumeric => new Error(
+                "Password.MissingNonAlphaNumeric",
+                "The password requires at least one non-alphanumeric.");
+        }
     }
 }

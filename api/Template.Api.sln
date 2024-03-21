@@ -7,17 +7,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{58097681-088
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Core", "Core", "{EE3DD74C-F012-4139-93D8-1B088932AB74}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Infrastructure", "Template.Infrastructure\Template.Infrastructure.csproj", "{E0407B2F-CABE-48D0-A9C7-4EDF0FEC38F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Infrastructure", "Template.Infrastructure\Template.Infrastructure.csproj", "{E0407B2F-CABE-48D0-A9C7-4EDF0FEC38F3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Domain", "Template.Domain\Template.Domain.csproj", "{20EC3CFE-9B94-46B2-AB08-24B9EFFE5BC1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Domain", "Template.Domain\Template.Domain.csproj", "{20EC3CFE-9B94-46B2-AB08-24B9EFFE5BC1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Application", "Template.Application\Template.Application.csproj", "{93052196-584C-479B-8036-0F4C9735B2D4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Application", "Template.Application\Template.Application.csproj", "{93052196-584C-479B-8036-0F4C9735B2D4}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Persistance", "Template.Persistance\Template.Persistance.csproj", "{A2AA1AEB-3A03-445F-A660-39EFA192C877}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Persistance", "Template.Persistance\Template.Persistance.csproj", "{A2AA1AEB-3A03-445F-A660-39EFA192C877}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Api", "Template.Api\Template.Api.csproj", "{A7DA0683-8747-4FC4-8BA6-EEF3DA91CBE5}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Template.Api", "Template.Api\Template.Api.csproj", "{A7DA0683-8747-4FC4-8BA6-EEF3DA91CBE5}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{349465BE-9B67-4B91-B6B1-AFB3D78F595B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Template.Contracts", "Template.Contracts\Template.Contracts.csproj", "{78A6D786-238F-400A-B28B-D6A6CE7C62D3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,6 +51,10 @@ Global
 		{349465BE-9B67-4B91-B6B1-AFB3D78F595B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{349465BE-9B67-4B91-B6B1-AFB3D78F595B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{349465BE-9B67-4B91-B6B1-AFB3D78F595B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{78A6D786-238F-400A-B28B-D6A6CE7C62D3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78A6D786-238F-400A-B28B-D6A6CE7C62D3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78A6D786-238F-400A-B28B-D6A6CE7C62D3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78A6D786-238F-400A-B28B-D6A6CE7C62D3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -60,6 +66,7 @@ Global
 		{93052196-584C-479B-8036-0F4C9735B2D4} = {EE3DD74C-F012-4139-93D8-1B088932AB74}
 		{A2AA1AEB-3A03-445F-A660-39EFA192C877} = {EE3DD74C-F012-4139-93D8-1B088932AB74}
 		{A7DA0683-8747-4FC4-8BA6-EEF3DA91CBE5} = {58097681-0880-43FB-BB14-0B653D4D82FC}
+		{78A6D786-238F-400A-B28B-D6A6CE7C62D3} = {EE3DD74C-F012-4139-93D8-1B088932AB74}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {482B27A3-2044-4535-BC5C-E6B0F8DDF4C7}

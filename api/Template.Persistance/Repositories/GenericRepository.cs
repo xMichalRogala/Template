@@ -9,6 +9,7 @@ namespace Template.Persistance.Repositories
     {
         private readonly DbContext _dbContext;
         private readonly DbSet<TEntity> _entities;
+        private Func<IQueryable<TEntity>, IQueryable<TEntity>> _trackingFunc = _ => _;
 
         public GenericRepository(DbContext dbContext)
         {
@@ -17,79 +18,104 @@ namespace Template.Persistance.Repositories
             _entities = _dbContext.Set<TEntity>();
         }
 
-        public async Task<IList<TEntity>> GetAllAsync(CancellationToken ct)
+        public void DisableTracking()
         {
-            return await _entities.ToListAsync(ct);
+            CheckIsTrackingEnabled();
+
+            _trackingFunc = _ => _.AsNoTracking();
+        }
+
+        public void EnableTracking()
+        {
+            _trackingFunc = _ => _.AsTracking();
         }
 
         public IQueryable<TEntity> GetAllAsQueryable()
         {
-            return _entities;
-        }
-
-        public async Task<TEntity?> GetByIdAsync(Guid id, CancellationToken ct)
-        {
-            return await _entities.FindAsync(id, ct);
-        }
-
-        public async Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken ct)
-        {
-            return await _entities.SingleOrDefaultAsync(predicate, ct);
-        }
-
-        public async Task<IList<TEntity>> WhereAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken ct)
-        {
-            return await _entities.Where(predicate).ToListAsync(ct);
+            return _trackingFunc(_entities);
         }
 
         public IQueryable<TEntity> WhereAsQueryable(Expression<Func<TEntity, bool>> predicate)
         {
-            return _entities.Where(predicate);
+            return _trackingFunc(_entities).Where(predicate);
+        }
+
+        public async Task<IList<TEntity>> GetAllAsync(CancellationToken ct)
+        {
+            return await _trackingFunc(_entities).ToListAsync(ct);
+        }
+
+        public async Task<TEntity?> GetByIdAsync(Guid id, CancellationToken ct)
+        {
+            return await _trackingFunc(_entities).SingleOrDefaultAsync(x => x.Id.Equals(id), ct);
+        }
+
+        public async Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken ct)
+        {
+            return await _trackingFunc(_entities).SingleOrDefaultAsync(predicate, ct);
+        }
+
+        public async Task<IList<TEntity>> WhereAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken ct)
+        {
+            return await _trackingFunc(_entities).Where(predicate).ToListAsync(ct);
         }
 
         public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken ct)
         {
-            return await _entities.AnyAsync(predicate, ct);
+            return await _trackingFunc(_entities).AnyAsync(predicate, ct);
         }
 
         public async Task<TEntity> AddAsync(TEntity entity, CancellationToken ct)
         {
+            CheckIsTrackingEnabled();
+
             await _entities.AddAsync(entity, ct);
             return entity;
         }
 
         public async Task<IEnumerable<TEntity>> AddRangeAsync(IEnumerable<TEntity> entities, CancellationToken ct)
         {
+            CheckIsTrackingEnabled();
+
             await _entities.AddRangeAsync(entities, ct);
             return entities;
         }
 
         public TEntity Update(TEntity entity)
         {
+            CheckIsTrackingEnabled();
+
             return _entities.Update(entity).Entity;
         }
 
         public IEnumerable<TEntity> UpdateRange(IEnumerable<TEntity> entities)
         {
+            CheckIsTrackingEnabled();
+
             _entities.UpdateRange(entities);
             return entities;
         }
 
         public void Remove(TEntity entity)
         {
+            CheckIsTrackingEnabled();
+
             _entities.Remove(entity);
         }
 
         public void RemoveWhere(Expression<Func<TEntity, bool>> predicate, CancellationToken ct)
         {
+            CheckIsTrackingEnabled();
+
             var entitiesForRemove = _entities.Where(predicate);
 
             _entities.RemoveRange(entitiesForRemove);
         }
 
-        public async Task SaveChangesAsync(CancellationToken ct)
+        private void CheckIsTrackingEnabled()
         {
-            await _dbContext.SaveChangesAsync(ct);
+            if (_dbContext.ChangeTracker.HasChanges())
+                throw new InvalidOperationException("Cannot disable tracking, when tracker has changes");
         }
     }
 }
