@@ -1,4 +1,5 @@
 using Serilog;
+using Template.Api.Middlewares;
 using Template.Persistance;
 
 namespace Template.Api
@@ -26,6 +27,7 @@ namespace Template.Api
             }
 
             app.UseSerilogRequestLogging();
+            app.UseCustomExceptionHandler();
 
             app.UseHttpsRedirection();
             app.UseAuthorization();
