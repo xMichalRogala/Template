@@ -1,7 +1,17 @@
-﻿namespace Template.Domain.Utilities
+﻿using Template.Domain.Exceptions;
+
+namespace Template.Domain.Utilities
 {
     public static class Ensure
     {
+        public static void That<T>(T value, Func<T, bool> prediction, Error error)
+        {
+            if(!prediction(value))
+            {
+                throw new DomainException(error);
+            }
+        }
+
         public static void NotEmpty(string value, string message, string argumentName)
         {
             if (string.IsNullOrWhiteSpace(value))

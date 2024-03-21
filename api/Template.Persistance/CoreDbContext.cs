@@ -1,18 +1,26 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
 using Microsoft.EntityFrameworkCore.Storage;
 using System.Reflection;
+using Template.Application.Core.Abstractions.Commons;
 using Template.Application.Core.Abstractions.Data;
+using Template.Domain.Entities;
+using Template.Domain.Entities.Abstract;
 using Template.Persistance.Extensions;
 
 namespace Template.Persistance
 {
     public class CoreDbContext : DbContext, IUnitOfWork
     {
-        public CoreDbContext(DbContextOptions options)
+        private readonly IDateTime _dateTime;
+
+        public CoreDbContext(DbContextOptions options, IDateTime dateTime)
             : base(options)
         {
-
+            _dateTime = dateTime;
         }
+
+        public DbSet<User> Users { get; set; }
 
         public async Task<IDbContextTransaction> BeginTransactionAsync(CancellationToken cancellationToken = default)
         {
@@ -53,6 +61,17 @@ namespace Template.Persistance
             }
         }
 
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) //todo: remove to interceptor maybe
+        {
+            DateTime utcNow = _dateTime.UtcNow;
+
+            UpdateAuditableEntities(utcNow);
+
+            UpdateSoftDeletableEntities(utcNow);
+
+            return await base.SaveChangesAsync(cancellationToken);
+        }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
@@ -60,6 +79,56 @@ namespace Template.Persistance
             modelBuilder.ApplyUtcDateTimeConverter();
 
             base.OnModelCreating(modelBuilder);
+        }
+
+        private void UpdateAuditableEntities(DateTime utcNow) //todo: remove to interceptor maybe
+        {
+            foreach (EntityEntry<IAuditableEntity> entityEntry in ChangeTracker.Entries<IAuditableEntity>())
+            {
+                if (entityEntry.State == EntityState.Added)
+                {
+                    entityEntry.Property(nameof(IAuditableEntity.CreatedOnUtc)).CurrentValue = utcNow;
+                }
+
+                if (entityEntry.State == EntityState.Modified)
+                {
+                    entityEntry.Property(nameof(IAuditableEntity.ModifiedOnUtc)).CurrentValue = utcNow;
+                }
+            }
+        }
+
+        private void UpdateSoftDeletableEntities(DateTime utcNow) //todo: remove to interceptor maybe
+        {
+            foreach (EntityEntry<ISoftDeletableEntity> entityEntry in ChangeTracker.Entries<ISoftDeletableEntity>())
+            {
+                if (entityEntry.State != EntityState.Deleted)
+                {
+                    continue;
+                }
+
+                entityEntry.Property(nameof(ISoftDeletableEntity.DeletedOnUtc)).CurrentValue = utcNow;
+
+                entityEntry.Property(nameof(ISoftDeletableEntity.Deleted)).CurrentValue = true;
+
+                entityEntry.State = EntityState.Modified;
+
+                UpdateDeletedEntityEntryReferencesToUnchanged(entityEntry);
+            }
+        }
+
+        private static void UpdateDeletedEntityEntryReferencesToUnchanged(EntityEntry entityEntry) //todo: remove to interceptor maybe
+        {
+            if (!entityEntry.References.Any())
+            {
+                return;
+            }
+
+            foreach (ReferenceEntry referenceEntry in entityEntry.References.Where(r => r.TargetEntry!.State == EntityState.Deleted))
+            {
+                referenceEntry.TargetEntry!.State = EntityState.Unchanged;
+
+                UpdateDeletedEntityEntryReferencesToUnchanged(referenceEntry.TargetEntry);
+            }
         }
     }
 }
