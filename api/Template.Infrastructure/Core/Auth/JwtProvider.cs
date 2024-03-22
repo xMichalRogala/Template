@@ -6,6 +6,7 @@ using System.Text;
 using Template.Application.Core.Abstractions.Auth;
 using Template.Application.Core.Abstractions.Commons;
 using Template.Domain.Entities;
+using Template.Infrastructure.Core.Auth.Settings;
 
 namespace Template.Infrastructure.Core.Auth
 {
@@ -16,9 +17,10 @@ namespace Template.Infrastructure.Core.Auth
         private readonly JwtSettings _jwtSettings = jwtOptions.Value;
         private readonly IDateTime _dateTime = dateTime;
 
-        public string Create(User user)
+        public string Create(User user, bool refreshToken = false)
         {
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecurityKey));
+            var key = !refreshToken ? _jwtSettings.SecurityAccessTokenKey : _jwtSettings.SecurityRefreshTokenKey;
+            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
 
             var signingCredentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
 
@@ -29,7 +31,8 @@ namespace Template.Infrastructure.Core.Auth
                 new Claim("name", user.FullName)
             ];
 
-            DateTime tokenExpirationTime = _dateTime.UtcNow.AddMinutes(_jwtSettings.TokenExpirationInMinutes);
+            var expiration = !refreshToken ? _jwtSettings.TokenExpirationInMinutes : _jwtSettings.TokenRefreshExpirationInMinutes;
+            DateTime tokenExpirationTime = _dateTime.UtcNow.AddMinutes(expiration);
 
             var token = new JwtSecurityToken(
                 _jwtSettings.Issuer,
@@ -43,5 +46,7 @@ namespace Template.Infrastructure.Core.Auth
 
             return tokenValue;
         }
+
+
     }
 }

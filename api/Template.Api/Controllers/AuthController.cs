@@ -18,5 +18,20 @@ namespace Template.Api.Controllers
 
             return Ok(userId);
         }
-}
+
+        [HttpPost(ApiRoutes.Authentication.Login)]
+        public IActionResult Login()
+        {
+            //todo
+            return Ok();
+        }
+
+        [Authorize(Policy = "RefreshJwtTokenSchema")] //change to static val
+        [HttpPost(ApiRoutes.Authentication.RefreshToken)]
+        public IActionResult RefreshToken()
+        {
+            //todo
+            return Ok();
+        }
+    }
 }
