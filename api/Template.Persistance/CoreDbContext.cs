@@ -55,7 +55,7 @@ namespace Template.Persistance
             }
         }
 
-        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) //todo: remove to interceptor maybe
+        public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default) //nice-to-have: remove to interceptor
         {
             DateTime utcNow = _dateTime.UtcNow;
 
@@ -75,7 +75,7 @@ namespace Template.Persistance
             base.OnModelCreating(modelBuilder);
         }
 
-        private void UpdateAuditableEntities(DateTime utcNow) //todo: remove to interceptor maybe
+        private void UpdateAuditableEntities(DateTime utcNow) //nice-to-have: remove to interceptor
         {
             foreach (EntityEntry<IAuditableEntity> entityEntry in ChangeTracker.Entries<IAuditableEntity>())
             {
@@ -91,7 +91,7 @@ namespace Template.Persistance
             }
         }
 
-        private void UpdateSoftDeletableEntities(DateTime utcNow) //todo: remove to interceptor maybe
+        private void UpdateSoftDeletableEntities(DateTime utcNow) //nice-to-have: remove to interceptor
         {
             foreach (EntityEntry<ISoftDeletableEntity> entityEntry in ChangeTracker.Entries<ISoftDeletableEntity>())
             {
@@ -110,7 +110,7 @@ namespace Template.Persistance
             }
         }
 
-        private static void UpdateDeletedEntityEntryReferencesToUnchanged(EntityEntry entityEntry) //todo: remove to interceptor maybe
+        private static void UpdateDeletedEntityEntryReferencesToUnchanged(EntityEntry entityEntry) //nice-to-have: remove to interceptor
         {
             if (!entityEntry.References.Any())
             {

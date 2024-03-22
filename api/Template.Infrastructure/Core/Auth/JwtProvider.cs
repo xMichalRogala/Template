@@ -16,6 +16,7 @@ namespace Template.Infrastructure.Core.Auth
     {
         private readonly JwtSettings _jwtSettings = jwtOptions.Value;
         private readonly IDateTime _dateTime = dateTime;
+        public const string UserIdClaimName = "userId";
 
         public (string token, DateTime tokenExpirationTime) Create(User user, bool refreshToken = false)
         {
@@ -26,7 +27,7 @@ namespace Template.Infrastructure.Core.Auth
 
             Claim[] claims =
             [
-                new Claim("userId", user.Id.ToString()),
+                new Claim(UserIdClaimName, user.Id.ToString()),
                 new Claim("email", user.Email),
                 new Claim("name", user.FullName)
             ];

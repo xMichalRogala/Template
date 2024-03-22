@@ -4,6 +4,11 @@ namespace Template.Domain.Errors
 {
     public static class DomainErrors
     {
+
+        public static class User
+        {
+            public static Error DuplicateEmail => new Error("User.DuplicateEmail", "The specified email is already in use.");
+        }
         public static class General
         {
             public static Error ServerError => new("General.ServerError", "The server encountered an unrecoverable error.");

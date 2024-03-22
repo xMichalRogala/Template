@@ -19,6 +19,7 @@ namespace Template.Infrastructure
             services.AddHttpContextAccessor();
             services.AddTransient<IDateTime, MachineDateTime>();
             services.AddScoped<IJwtProvider, JwtProvider>();
+            services.AddScoped<IUserIdentifierProvider, UserIdentifierProvider>();
 
             services.AddAuth(configuration);
 
@@ -43,7 +44,7 @@ namespace Template.Infrastructure
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSettings.SecurityAccessTokenKey))
                     };
                 })
-                .AddJwtBearer("RefreshJwtTokenSchema", opt =>
+                .AddJwtBearer(JwtSettings.RefreshJwtTokenSchema, opt =>
                 {
                     opt.TokenValidationParameters = new TokenValidationParameters
                     {
@@ -60,8 +61,8 @@ namespace Template.Infrastructure
             {
                 opt.DefaultPolicy = new AuthorizationPolicyBuilder(JwtBearerDefaults.AuthenticationScheme).RequireAuthenticatedUser().Build();
 
-                var onlySecondJwtSchemePolicyBuilder = new AuthorizationPolicyBuilder("RefreshJwtTokenSchema"); //todo change to static val
-                opt.AddPolicy("RefreshJwtTokenSchema", onlySecondJwtSchemePolicyBuilder
+                var onlySecondJwtSchemePolicyBuilder = new AuthorizationPolicyBuilder(JwtSettings.RefreshJwtTokenSchema);
+                opt.AddPolicy(JwtSettings.RefreshJwtTokenSchema, onlySecondJwtSchemePolicyBuilder
                     .RequireAuthenticatedUser()
                     .Build());
             });

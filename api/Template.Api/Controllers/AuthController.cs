@@ -12,18 +12,23 @@ namespace Template.Api.Controllers
     public sealed class AuthController(IMediator mediator) : ApiControllerBase(mediator)
     {
         [HttpPost(ApiRoutes.Authentication.Register)]
-        public async Task<IActionResult> Create(RegisterRequest registerRequest)
+        [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Register(RegisterRequest registerRequest, CancellationToken cancellationToken)
         {
-            var userId = await Mediator.Send(new CreateUserCommand(registerRequest.FirstName, registerRequest.LastName, registerRequest.Email, registerRequest.Password));
+            var tokenResponse = await Mediator.Send(new CreateUserCommand(registerRequest.FirstName, registerRequest.LastName, registerRequest.Email, registerRequest.Password), cancellationToken);
 
-            return Ok(userId);
+            return Ok(tokenResponse);
         }
 
         [HttpPost(ApiRoutes.Authentication.Login)]
-        public IActionResult Login()
+        [ProducesResponseType(typeof(TokenResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(ApiErrorResponse), StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Login(LoginRequest loginRequest, CancellationToken cancellationToken)
         {
-            //todo
-            return Ok();
+            var tokenResult = await Mediator.Send(loginRequest, cancellationToken);
+
+            return Ok(tokenResult);
         }
 
         [Authorize(Policy = "RefreshJwtTokenSchema")] //change to static val

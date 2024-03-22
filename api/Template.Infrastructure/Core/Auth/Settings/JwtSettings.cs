@@ -3,6 +3,7 @@
     public class JwtSettings
     {
         public const string SettingsKey = "Jwt";
+        public const string RefreshJwtTokenSchema = "RefreshJwtTokenSchema";
 
         public JwtSettings()
         {
