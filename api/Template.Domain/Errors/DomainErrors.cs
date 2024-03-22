@@ -54,5 +54,12 @@ namespace Template.Domain.Errors
                 "Password.MissingNonAlphaNumeric",
                 "The password requires at least one non-alphanumeric.");
         }
+
+        public static class Authentication
+        {
+            public static Error InvalidEmailOrPassword => new Error(
+                "Authentication.InvalidEmailOrPassword",
+                "The specified email or password are incorrect.");
+        }
     }
 }

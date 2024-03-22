@@ -10,6 +10,8 @@ namespace Template.Application.Core.Abstractions.Data
 
         Task<TEntity?> SingleOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken ct);
 
+        Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken ct);
+
         Task<IList<TEntity>> WhereAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken ct);
 
         Task<bool> AnyAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken ct);

@@ -33,5 +33,13 @@ namespace Template.Api.Controllers
             //todo
             return Ok();
         }
+
+        [Authorize]
+        [HttpPost(ApiRoutes.Authentication.Revoke)]
+        public IActionResult Revoke()
+        {
+            //todo
+            return Ok();
+        }
     }
 }

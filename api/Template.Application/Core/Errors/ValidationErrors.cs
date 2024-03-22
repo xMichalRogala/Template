@@ -14,5 +14,12 @@ namespace Template.Application.Core.Errors
 
             internal static Error PasswordIsRequired => new("CreateUser.PasswordIsRequired", "The password is required.");
         }
+
+        internal static class Login
+        {
+            internal static Error EmailIsRequired => new Error("Login.EmailIsRequired", "The email is required.");
+
+            internal static Error PasswordIsRequired => new Error("Login.PasswordIsRequired", "The password is required.");
+        }
     }
 }

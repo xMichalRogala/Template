@@ -4,6 +4,6 @@ namespace Template.Application.Core.Abstractions.Auth
 {
     public interface IJwtProvider
     {
-        string Create(User user, bool refreshToken = false);
+        (string token, DateTime tokenExpirationTime) Create(User user, bool refreshToken = false);
     }
 }

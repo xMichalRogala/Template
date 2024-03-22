@@ -2,6 +2,7 @@
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Template.Application.Core.Abstractions.Data;
+using Template.Domain.Repositories;
 using Template.Persistance.Infrastructure;
 using Template.Persistance.Repositories;
 
@@ -31,6 +32,8 @@ namespace Template.Persistance
             services.AddScoped<IUnitOfWork>(serviceProvider => serviceProvider.GetRequiredService<CoreDbContext>());
             services.AddScoped(typeof(IConcreteGenericRepository<>), typeof(GenericRepository<>));
             services.AddScoped(typeof(IQueryableGenericRepository<>), typeof(GenericRepository<>));
+
+            services.AddScoped<IUserRepository, UserRepository>();
 
             return services;
         }

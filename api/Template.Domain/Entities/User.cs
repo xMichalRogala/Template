@@ -37,9 +37,22 @@ namespace Template.Domain.Entities
 
         public DateTime? DeletedOnUtc { get; }
 
+        public string? RefreshToken { get; private set; }
+
+        public DateTime? RefreshTokenExpiryTime { get; private set; }
+
         public bool Deleted { get; }
 
         public static User Create(FirstName firstName, LastName lastName, Email email, string passwordHash) => new(firstName, lastName, email, passwordHash);
+
+        public void AddRefreshToken(string refreshToken, DateTime refreshTokenExpiryTime)
+        {
+            Ensure.NotEmpty(refreshTokenExpiryTime, "The refresh token expiry time is required.", nameof(refreshTokenExpiryTime));
+            Ensure.NotEmpty(refreshToken, "The refresh token is required.", nameof(refreshToken));
+
+            RefreshToken = refreshToken;
+            RefreshTokenExpiryTime = refreshTokenExpiryTime;
+        }
 
         public bool VerifyPasswordHash(string password, IPasswordHashChecker passwordHashChecker)
             => !string.IsNullOrWhiteSpace(password) && passwordHashChecker.HashesMatch(_passwordHash, password);

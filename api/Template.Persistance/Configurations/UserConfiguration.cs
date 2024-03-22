@@ -52,6 +52,10 @@ namespace Template.Persistance.Configurations
 
             builder.Property(user => user.DeletedOnUtc);
 
+            builder.Property(user => user.RefreshToken);
+
+            builder.Property(user => user.RefreshTokenExpiryTime);
+
             builder.Property(user => user.Deleted).HasDefaultValue(false);
 
             builder.HasQueryFilter(user => !user.Deleted);

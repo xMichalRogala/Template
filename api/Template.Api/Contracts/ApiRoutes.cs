@@ -7,6 +7,10 @@
             public const string Login = "auth/login";
 
             public const string Register = "auth/register";
+
+            public const string RefreshToken = "auth/refresh-token";
+
+            public const string Revoke = "auth/revoke";
         }
     }
 }

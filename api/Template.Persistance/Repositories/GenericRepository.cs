@@ -55,6 +55,11 @@ namespace Template.Persistance.Repositories
             return await _trackingFunc(_entities).SingleOrDefaultAsync(predicate, ct);
         }
 
+        public async Task<TEntity?> FirstOrDefaultAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken ct)
+        {
+            return await _trackingFunc(_entities).FirstOrDefaultAsync(predicate, ct);
+        }
+
         public async Task<IList<TEntity>> WhereAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken ct)
         {
             return await _trackingFunc(_entities).Where(predicate).ToListAsync(ct);

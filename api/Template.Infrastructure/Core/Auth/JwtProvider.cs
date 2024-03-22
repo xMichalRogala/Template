@@ -17,7 +17,7 @@ namespace Template.Infrastructure.Core.Auth
         private readonly JwtSettings _jwtSettings = jwtOptions.Value;
         private readonly IDateTime _dateTime = dateTime;
 
-        public string Create(User user, bool refreshToken = false)
+        public (string token, DateTime tokenExpirationTime) Create(User user, bool refreshToken = false)
         {
             var key = !refreshToken ? _jwtSettings.SecurityAccessTokenKey : _jwtSettings.SecurityRefreshTokenKey;
             var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(key));
@@ -44,7 +44,7 @@ namespace Template.Infrastructure.Core.Auth
 
             string tokenValue = new JwtSecurityTokenHandler().WriteToken(token);
 
-            return tokenValue;
+            return (tokenValue, tokenExpirationTime);
         }
 
 
