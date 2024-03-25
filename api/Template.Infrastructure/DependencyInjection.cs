@@ -6,9 +6,12 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Template.Application.Core.Abstractions.Auth;
 using Template.Application.Core.Abstractions.Commons;
+using Template.Application.Core.Abstractions.Cryptography;
+using Template.Domain.Services;
 using Template.Infrastructure.Core.Auth;
 using Template.Infrastructure.Core.Auth.Settings;
 using Template.Infrastructure.Core.Commons;
+using Template.Infrastructure.Core.Cryptography;
 
 namespace Template.Infrastructure
 {
@@ -18,6 +21,8 @@ namespace Template.Infrastructure
         {
             services.AddHttpContextAccessor();
             services.AddTransient<IDateTime, MachineDateTime>();
+            services.AddTransient<IPasswordHasher, PasswordHasher>();
+            services.AddTransient<IPasswordHashChecker, PasswordHasher>();
             services.AddScoped<IJwtProvider, JwtProvider>();
             services.AddScoped<IUserIdentifierProvider, UserIdentifierProvider>();
 

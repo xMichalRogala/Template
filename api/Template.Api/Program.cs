@@ -1,6 +1,7 @@
 using Serilog;
 using Template.Api.Middlewares;
 using Template.Persistance;
+using Template.Infrastructure;
 
 namespace Template.Api
 {
@@ -16,6 +17,8 @@ namespace Template.Api
             builder.Services
                 .AddEndpointsApiExplorer()
                 .AddSwaggerGen()
+                .AddApplication()
+                .AddInfrastructure(builder.Configuration)
                 .AddPersistence(builder.Configuration, builder.Environment.IsDevelopment());
 
             var app = builder.Build();

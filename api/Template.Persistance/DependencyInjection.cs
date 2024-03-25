@@ -20,7 +20,6 @@ namespace Template.Persistance
             services.AddSingleton(connectionStringObj);
             services.AddDbContext<CoreDbContext>(options =>
             {
-                options.UseLazyLoadingProxies();
                 options.UseSqlServer(connectionStringObj);
 
                 if (isDevelopmentEnvironment)

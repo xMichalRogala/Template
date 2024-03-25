@@ -39,6 +39,8 @@ namespace Template.Persistance.Configurations
                     .HasColumnName(nameof(User.Email))
                     .HasMaxLength(Email.MaxLength)
                     .IsRequired();
+
+                emailBuilder.HasIndex(email => email.Value).IsUnique();
             });
 
             builder.Property<string>("_passwordHash")

@@ -23,6 +23,11 @@ namespace Template.Domain.Entities
             _passwordHash = passwordHash;
         }
 
+        #pragma warning disable CS8618
+        //ef core
+        private User() { }
+        #pragma warning restore CS8618
+
         public FirstName FirstName { get; private set; }
 
         public LastName LastName { get; private set; }

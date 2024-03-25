@@ -11,7 +11,7 @@ namespace Template.Persistance.Repositories
         private readonly DbSet<TEntity> _entities;
         private Func<IQueryable<TEntity>, IQueryable<TEntity>> _trackingFunc = _ => _;
 
-        public GenericRepository(DbContext dbContext)
+        public GenericRepository(CoreDbContext dbContext)
         {
             _dbContext = dbContext ??
                 throw new ArgumentNullException(nameof(dbContext));
